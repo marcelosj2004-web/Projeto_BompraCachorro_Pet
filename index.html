@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <title>Projeto_BompraCachorro_Pet | Centro de Cuidados & Gestão</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Tela de Autenticação com Banner Visual de Pets -->
+        <section id="login-view" class="card-login fade-in">
+            <div class="login-banner">
+                <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80" alt="Cachorro Feliz" class="hero-pet-img">
+                <div class="banner-overlay">
+                    <span class="pet-badge">🐕 Centro Veterinário & Estética</span>
+                </div>
+            </div>
+
+            <div class="login-body">
+                <div class="brand-header">
+                    <h1>Projeto_BompraCachorro_Pet</h1>
+                    <p class="subtitle">Portal Administrativo & Fila de Cuidados</p>
+                </div>
+
+                <form id="login-form" novalidate>
+                    <div class="form-group">
+                        <label for="username">Identificação do Profissional</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            placeholder="Ex: operador_vet" 
+                            autocomplete="off" 
+                            required 
+                            maxlength="30"
+                            spellcheck="false"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Chave de Acesso</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            placeholder="••••••••" 
+                            autocomplete="current-password" 
+                            required 
+                            maxlength="64"
+                        >
+                    </div>
+
+                    <button type="submit" id="btn-submit" class="btn-primary">Acessar Painel Pet 🐾</button>
+                    <div id="auth-alert" class="alert-box hidden" role="alert"></div>
+                </form>
+                
+                <footer class="card-footer">
+                    <small>🔒 Conexão Criptografada | Projeto_BompraCachorro_Pet</small>
+                </footer>
+            </div>
+        </section>
+
+        <!-- Painel Interno: Gestão de Pacientes com Fotos de Animais -->
+        <section id="dashboard-view" class="dashboard hidden fade-in">
+            <header class="topbar">
+                <div class="topbar-brand">
+                    <span class="brand-icon">🐾</span>
+                    <div>
+                        <h2>Projeto_BompraCachorro_Pet</h2>
+                        <small>Gestão de Estética e Cuidados Veterinários</small>
+                    </div>
+                </div>
+                <div class="topbar-user">
+                    <span class="user-chip">Profissional: <strong id="logged-user-display">---</strong></span>
+                    <button id="btn-logout" class="btn-danger">Sair (Logout)</button>
+                </div>
+            </header>
+
+            <main class="dashboard-content">
+                <!-- Métricas com Ícones e Estilo Visual -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🛁</div>
+                        <div>
+                            <h3>Banho & Tosa Hoje</h3>
+                            <p class="stat-number">12</p>
+                            <small class="stat-status text-amber">4 em andamento</small>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🩺</div>
+                        <div>
+                            <h3>Consultas Veterinárias</h3>
+                            <p class="stat-number">5</p>
+                            <small class="stat-status text-blue">Próxima às 16:30</small>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💉</div>
+                        <div>
+                            <h3>Vacinas & Medicamentos</h3>
+                            <p class="stat-number">8</p>
+                            <small class="stat-status text-green">Estoque 100% ok</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista Visual de Pacientes com Fotos Reais -->
+                <div class="pets-section">
+                    <div class="section-title-bar">
+                        <h3>🐶 Pacientes do Dia & Atendimentos em Andamento</h3>
+                        <span class="counter-badge">3 Pacientes Ativos</span>
+                    </div>
+
+                    <div class="pets-grid">
+                        <!-- Pet 1 -->
+                        <div class="pet-card">
+                            <div class="pet-avatar-wrapper">
+                                <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=300&q=80" alt="Golden Retriever Thor" class="pet-avatar">
+                                <span class="badge-status badge-warning">Banho & Tosa</span>
+                            </div>
+                            <div class="pet-info">
+                                <h4>Thor <span class="breed">Golden Retriever</span></h4>
+                                <p class="tutor">👤 Tutora: <strong>Mariana Silva</strong></p>
+                                <p class="obs">✂️ Serviço: Banho aromático e tosa higiênica.</p>
+                                <div class="pet-footer">
+                                    <span class="status-indicator warning">Aguardando Secagem</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pet 2 -->
+                        <div class="pet-card">
+                            <div class="pet-avatar-wrapper">
+                                <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=300&q=80" alt="Poodle Mel" class="pet-avatar">
+                                <span class="badge-status badge-info">Veterinário</span>
+                            </div>
+                            <div class="pet-info">
+                                <h4>Mel <span class="breed">Poodle Toy</span></h4>
+                                <p class="tutor">👤 Tutor: <strong>Carlos Alberto</strong></p>
+                                <p class="obs">🩺 Serviço: Check-up clínico geral anual.</p>
+                                <div class="pet-footer">
+                                    <span class="status-indicator info">Em Consulta</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pet 3 -->
+                        <div class="pet-card">
+                            <div class="pet-avatar-wrapper">
+                                <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=300&q=80" alt="Bulldog Francês Bob" class="pet-avatar">
+                                <span class="badge-status badge-success">Concluído</span>
+                            </div>
+                            <div class="pet-info">
+                                <h4>Bob <span class="breed">Bulldog Francês</span></h4>
+                                <p class="tutor">👤 Tutora: <strong>Fernanda Souza</strong></p>
+                                <p class="obs">💉 Serviço: Aplicação Vacina V10 + Raiva.</p>
+                                <div class="pet-footer">
+                                    <span class="status-indicator success">Pronto para Retirada</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

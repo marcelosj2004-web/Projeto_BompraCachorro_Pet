@@ -1,0 +1,385 @@
+:root {
+    --bg-dark: #0f172a;
+    --card-dark: rgba(30, 41, 59, 0.88);
+    --card-surface: #334155;
+    --primary-pet: #059669;
+    --primary-pet-hover: #047857;
+    --accent-amber: #f59e0b;
+    --accent-blue: #38bdf8;
+    --danger-red: #ef4444;
+    --text-white: #f8fafc;
+    --text-dim: #cbd5e1;
+    --border-color: rgba(255, 255, 255, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Fundo Especial Temático: Shiba Inu mundialmente famoso com overlay de contraste */
+body {
+    background: 
+        linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.82) 100%),
+        url('https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=1920&q=85') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-white);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app-container {
+    width: 100%;
+    padding: 24px;
+}
+
+/* Card de Login com Efeito Glassmorphism */
+.card-login {
+    background-color: var(--card-dark);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    max-width: 440px;
+    margin: 0 auto;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+}
+
+.login-banner {
+    position: relative;
+    height: 170px;
+    width: 100%;
+}
+
+.hero-pet-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner-overlay {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+}
+
+.pet-badge {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(6px);
+    color: #fcd34d;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-body {
+    padding: 28px 24px;
+}
+
+.brand-header h1 {
+    font-size: 20px;
+    color: var(--text-white);
+    text-align: center;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+    text-align: center;
+    margin: 4px 0 20px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-pet);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-pet);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 8px;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-pet-hover);
+}
+
+.btn-danger {
+    padding: 8px 14px;
+    background-color: var(--danger-red);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.alert-box {
+    margin-top: 14px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: rgba(239, 68, 68, 0.2);
+    border: 1px solid var(--danger-red);
+    color: #fca5a5;
+    font-size: 13px;
+    text-align: center;
+}
+
+.card-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--text-dim);
+}
+
+/* Dashboard Pet Shop Translúcido */
+.dashboard {
+    max-width: 1100px;
+    margin: 0 auto;
+    background-color: var(--card-dark);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.75);
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    background-color: rgba(22, 32, 50, 0.85);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    font-size: 28px;
+}
+
+.topbar-brand h2 {
+    font-size: 18px;
+}
+
+.topbar-brand small {
+    color: var(--text-dim);
+    font-size: 12px;
+}
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.user-chip {
+    font-size: 13px;
+    background: rgba(15, 23, 42, 0.7);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.dashboard-content {
+    padding: 24px;
+}
+
+/* Métricas com Ícones */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: rgba(15, 23, 42, 0.65);
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stat-icon {
+    font-size: 32px;
+    background: rgba(30, 41, 59, 0.8);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.stat-card h3 {
+    font-size: 13px;
+    color: var(--text-dim);
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin: 2px 0;
+}
+
+.text-amber { color: var(--accent-amber); }
+.text-blue { color: var(--accent-blue); }
+.text-green { color: #34d399; }
+
+/* Grid de Cards de Pets com Fotos */
+.section-title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.section-title-bar h3 {
+    font-size: 16px;
+}
+
+.counter-badge {
+    background: rgba(5, 150, 105, 0.25);
+    color: #34d399;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.pets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px;
+}
+
+.pet-card {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.pet-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-pet);
+}
+
+.pet-avatar-wrapper {
+    position: relative;
+    height: 140px;
+    width: 100%;
+}
+
+.pet-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.badge-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+}
+
+.badge-warning { background: rgba(245, 158, 11, 0.9); color: #000; }
+.badge-info { background: rgba(56, 189, 248, 0.9); color: #000; }
+.badge-success { background: rgba(16, 185, 129, 0.9); color: #000; }
+
+.pet-info {
+    padding: 16px;
+}
+
+.pet-info h4 {
+    font-size: 16px;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.breed {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 400;
+}
+
+.tutor, .obs {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+}
+
+.pet-footer {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.status-indicator {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-indicator.warning { color: var(--accent-amber); }
+.status-indicator.info { color: var(--accent-blue); }
+.status-indicator.success { color: #34d399; }
+
+.hidden { display: none !important; }
+.fade-in { animation: fadeIn 0.25s ease-in-out; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
