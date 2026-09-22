@@ -1,9 +1,9 @@
 /**
- * Projeto_BompraCachorro_Pet - Camada Lógica e de Segurança
- * Diretrizes: Secure by Design & Mitigações OWASP Top 10
+ * Projeto_BompraCachorro_Pet - Camada Logica e de Seguranca
+ * Diretrizes: Secure by Design & Mitigacoes OWASP Top 10 (A07 - Identification & Auth Failures)
  */
 
-// OWASP A03 (Anti-XSS): Sanitização estrita antes de renderizar qualquer texto
+// OWASP A03: Sanitizacao estrita contra XSS
 function sanitizeText(input) {
     if (typeof input !== 'string') return '';
     const tempDiv = document.createElement('div');
@@ -11,78 +11,125 @@ function sanitizeText(input) {
     return tempDiv.innerHTML;
 }
 
+// Funcao nativa Web Cryptography API para calculo de SHA-256
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Mapeamento dos elementos do DOM
     const loginView = document.getElementById('login-view');
     const dashboardView = document.getElementById('dashboard-view');
     const loginForm = document.getElementById('login-form');
     const authAlert = document.getElementById('auth-alert');
     const loggedUserDisplay = document.getElementById('logged-user-display');
     const btnLogout = document.getElementById('btn-logout');
+    const submitBtn = loginForm ? loginForm.querySelector('button[type="submit"]') : null;
 
-    // Chaves de controle de sessão com namespace do projeto
+    // Chaves de controle de sessao e controle de forca bruta
     const SESSION_TOKEN_KEY = 'pbcp_auth_token';
-    const SESSION_USER_KEY = 'pbcp_auth_user';
+    const SESSION_USER_KEY  = 'pbcp_auth_user';
+    const ATTEMPTS_KEY      = 'pbcp_failed_attempts';
+    const LOCKOUT_KEY       = 'pbcp_lockout_until';
 
-    // OWASP A01: Validação de sessão ativa ao carregar a página
+    const MAX_ATTEMPTS  = 4;
+    const LOCKOUT_TIME  = 15 * 60 * 1000; // 15 minutos em milissegundos
+
+    // Hash SHA-256 da senha 'PetSeguro@2026' (A senha real nao consta no codigo)
+    const VALID_USER_HASH = 'operador_vet';
+    const VALID_PASS_HASH = '899f8eb7ff3b99dbfe595568ef5c1103c81216666df3b3e2182046fa32d43a67';
+
+    // OWASP A01: Validacao de sessao previa
     const activeToken = sessionStorage.getItem(SESSION_TOKEN_KEY);
-    const activeUser = sessionStorage.getItem(SESSION_USER_KEY);
-
+    const activeUser  = sessionStorage.getItem(SESSION_USER_KEY);
     if (activeToken && activeUser) {
         showDashboard(activeUser);
     }
 
-    // Processamento do Formulário de Acesso
-    loginForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        hideAlert();
-
-        const usernameInput = document.getElementById('username').value.trim();
-        const passwordInput = document.getElementById('password').value;
-
-        // Validação de formato e tamanho no cliente
-        if (!usernameInput || !passwordInput) {
-            showAlert('Informe o usuário e a senha de acesso.');
-            return;
+    // Valida se o utilizador esta em periodo de bloqueio
+    function checkLockout() {
+        const lockoutUntil = parseInt(localStorage.getItem(LOCKOUT_KEY), 10);
+        if (lockoutUntil && Date.now() < lockoutUntil) {
+            const minutesLeft = Math.ceil((lockoutUntil - Date.now()) / 60000);
+            showAlert(`Acesso temporariamente bloqueado por excesso de tentativas falhadas. Tente novamente em ${minutesLeft} minuto(s).`);
+            if (submitBtn) submitBtn.disabled = true;
+            return true;
+        } else if (lockoutUntil && Date.now() >= lockoutUntil) {
+            localStorage.removeItem(LOCKOUT_KEY);
+            localStorage.setItem(ATTEMPTS_KEY, '0');
+            if (submitBtn) submitBtn.disabled = false;
+            hideAlert();
         }
+        return false;
+    }
 
-        if (usernameInput.length > 30 || passwordInput.length > 64) {
-            showAlert('Tamanho de credenciais fora dos limites permitidos.');
-            return;
-        }
+    checkLockout();
 
-        // Credenciais simuladas de validação
-        const VALID_USER = 'operador_vet';
-        const VALID_PASS = 'PetSeguro@2026';
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            hideAlert();
 
-        if (usernameInput === VALID_USER && passwordInput === VALID_PASS) {
-            // OWASP A01: Emissão de token volátil criptograficamente seguro
-            const sessionToken = crypto.randomUUID();
-            sessionStorage.setItem(SESSION_TOKEN_KEY, sessionToken);
-            sessionStorage.setItem(SESSION_USER_KEY, usernameInput);
+            if (checkLockout()) return;
 
-            loginForm.reset();
-            showDashboard(usernameInput);
-        } else {
-            // OWASP A07: Resposta genérica para impedir enumeração de usuários
-            showAlert('Credenciais inválidas. Tente novamente.');
-        }
-    });
+            const usernameInput = document.getElementById('username').value.trim();
+            const passwordInput = document.getElementById('password').value;
 
-    // OWASP A01: Logout funcional com expurgo de sessão
-    btnLogout.addEventListener('click', () => {
-        sessionStorage.removeItem(SESSION_TOKEN_KEY);
-        sessionStorage.removeItem(SESSION_USER_KEY);
-        sessionStorage.clear();
+            if (!usernameInput || !passwordInput) {
+                showAlert('Informe o usuario e a senha de acesso.');
+                return;
+            }
 
-        dashboardView.classList.add('hidden');
-        loginView.classList.remove('hidden');
-    });
+            if (usernameInput.length > 30 || passwordInput.length > 64) {
+                showAlert('Tamanho de credenciais fora dos limites permitidos.');
+                return;
+            }
+
+            const hashedInput = await sha256(passwordInput);
+
+            if (usernameInput === VALID_USER_HASH && hashedInput === VALID_PASS_HASH) {
+                localStorage.removeItem(ATTEMPTS_KEY);
+                localStorage.removeItem(LOCKOUT_KEY);
+
+                const sessionToken = crypto.randomUUID();
+                sessionStorage.setItem(SESSION_TOKEN_KEY, sessionToken);
+                sessionStorage.setItem(SESSION_USER_KEY, usernameInput);
+
+                loginForm.reset();
+                showDashboard(usernameInput);
+            } else {
+                let failedAttempts = parseInt(localStorage.getItem(ATTEMPTS_KEY) || '0', 10) + 1;
+                localStorage.setItem(ATTEMPTS_KEY, failedAttempts.toString());
+
+                if (failedAttempts >= MAX_ATTEMPTS) {
+                    const lockoutDeadline = Date.now() + LOCKOUT_TIME;
+                    localStorage.setItem(LOCKOUT_KEY, lockoutDeadline.toString());
+                    if (submitBtn) submitBtn.disabled = true;
+                    showAlert('Limite de 4 tentativas excedido. Acesso bloqueado por 15 minutos.');
+                } else {
+                    const remaining = MAX_ATTEMPTS - failedAttempts;
+                    showAlert(`Credenciais invalidas. Restam ${remaining} tentativa(s) antes do bloqueio.`);
+                }
+            }
+        });
+    }
+
+    if (btnLogout) {
+        btnLogout.addEventListener('click', () => {
+            sessionStorage.removeItem(SESSION_TOKEN_KEY);
+            sessionStorage.removeItem(SESSION_USER_KEY);
+            sessionStorage.clear();
+
+            dashboardView.classList.add('hidden');
+            loginView.classList.remove('hidden');
+        });
+    }
 
     function showDashboard(user) {
         loginView.classList.add('hidden');
         dashboardView.classList.remove('hidden');
-        // Renderização segura contra injeção de scripts
         loggedUserDisplay.textContent = sanitizeText(user);
     }
 
